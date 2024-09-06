@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:tracker_app/models/expense.dart';
 
 class NewExpense extends StatefulWidget{
@@ -37,9 +39,11 @@ class _NewExpenseState extends State<NewExpense> {
   }
 
   void _submitExpensesDate(){
-    final enteredAmount = double.tryParse(_amountController
-        .text); //tryParse ('Hello') => null, tryParse('1.12') => 1.12
+    final enteredAmount = double.tryParse(_amountController.text.replaceAll(RegExp(r'\D'), ''));
     final amountIsInvalid = enteredAmount == null || enteredAmount <= 0;
+    print('Title: ${_titleController.text}');
+    print('Amount: $enteredAmount');
+    print('Category: $_selectedCategory');
     if (_titleController.text.trim().isEmpty ||
         amountIsInvalid ||
         _selectedCategory == null){
@@ -78,6 +82,7 @@ class _NewExpenseState extends State<NewExpense> {
 
   @override
   Widget build(BuildContext context) {
+    final rupiahFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp');
     final keyboardSpace = MediaQuery.of(context).viewInsets.bottom;
     return LayoutBuilder(builder: (ctx, contraints){
       final width = contraints.maxWidth;
@@ -109,7 +114,6 @@ class _NewExpenseState extends State<NewExpense> {
                         controller: _amountController,
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
-                          prefixText: '\$ ',
                           label: Text('Amount'),
                         ),
                       ),
@@ -168,8 +172,8 @@ class _NewExpenseState extends State<NewExpense> {
                       child: TextField(
                         controller: _amountController,
                         keyboardType: TextInputType.number,
+                        inputFormatters: [RupiahInputFormatter()],
                         decoration: const InputDecoration(
-                          prefixText: '\$ ',
                           label: Text('Amount'),
                         ),
                       ),
@@ -251,5 +255,19 @@ class _NewExpenseState extends State<NewExpense> {
     });
 
 
+  }
+}
+
+class RupiahInputFormatter extends TextInputFormatter {
+  final NumberFormat _rupiahFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0);
+
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    final int? newValueInt = int.tryParse(newValue.text.replaceAll(RegExp(r'\D'), ''));
+    final String newText = newValueInt != null ? _rupiahFormat.format(newValueInt) : '';
+    return TextEditingValue(
+      text: newText,
+      selection: TextSelection.collapsed(offset: newText.length),
+    );
   }
 }

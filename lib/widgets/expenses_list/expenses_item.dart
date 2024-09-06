@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tracker_app/models/expense.dart';
 
 class ExpensesItem extends StatelessWidget{
@@ -8,6 +9,7 @@ class ExpensesItem extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    final rupiahFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0);
     return Card(
       child: Padding (
         padding: const EdgeInsets.symmetric(
@@ -24,7 +26,7 @@ class ExpensesItem extends StatelessWidget{
             const SizedBox(height:4 ),
             Row(
               children: [
-                Text('\$${expense.amount.toStringAsFixed(2)}'),
+                Text(rupiahFormat.format(expense.amount)),
                 const Spacer(),
                 Row(
                   children: [

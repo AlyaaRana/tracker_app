@@ -71,6 +71,7 @@ class MyApp extends StatelessWidget {
             ),
             // themeMode: ThemeMode.system,
             home: const Expenses(),
+            debugShowCheckedModeBanner: false,
           );
     // });
 

@@ -15,24 +15,11 @@ class Expenses extends StatefulWidget{
 }
 
 class _ExpensesState extends State<Expenses> {
-  final List<Expense> _registeredExpenses = [
-    Expense(
-      title: 'Flutter Course',
-      amount: 19.99,
-      date: DateTime.now(),
-      category: Category.work,
-    ),
-    Expense(
-      title: 'Cinema',
-      amount: 15.69,
-      date: DateTime.now(),
-      category: Category.leisure,
-    ),
-  ];
+  final List<Expense> _registeredExpenses = [];
 
   void _openAddExpenseOverlay(){
     showModalBottomSheet(
-      isScrollControlled: true, //biar tdk gantung dibawah
+      isScrollControlled: true,
         context: context,
         builder: (ctx) =>  NewExpense(onAddExpense: _addExpense),
     );
@@ -85,7 +72,7 @@ class _ExpensesState extends State<Expenses> {
     
     return  Scaffold(
       appBar: AppBar(
-         title: const Text('Flutter ExpenseTracker'),
+         title: const Text('Flutter Expense Tracker'),
         actions: [
           IconButton(
             onPressed:_openAddExpenseOverlay,

@@ -6,7 +6,6 @@ final formatter = DateFormat.yMd();
 
 const uuid = Uuid();
 
-//enum adalah kata kunci untuk membuat kategori khusus
 enum  Category {
   food, travel, leisure, work
 }
@@ -56,7 +55,7 @@ class ExpenseBucket {
     double sum = 0;
 
     for (final expense in expenses) {
-      sum += expense.amount; // sum = sum + expense.amount
+      sum += expense.amount;
     }
 
     return sum;
